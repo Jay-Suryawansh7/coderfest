@@ -37,15 +37,22 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-3 mb-6">
-              <div className="relative w-12 h-12">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary to-primary-dark rounded-xl" />
-                <div className="absolute inset-[3px] bg-surface-cream rounded-lg flex items-center justify-center">
-                  <span className="text-primary font-heading font-bold text-xl">H</span>
-                </div>
+              <div className="relative w-12 h-12 flex items-center justify-center bg-primary/10 rounded-xl text-primary">
+                <svg
+                  className="w-8 h-8"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M3 21h18M5 21v-7l8-5 8 5v7M6 10l6-3.5L18 10" />
+                </svg>
               </div>
               <div className="flex flex-col">
                 <span className="font-heading font-semibold text-xl text-text">
-                  Heritage Pulse
+                  Dharohar
                 </span>
                 <span className="text-accent text-xs font-medium tracking-wider uppercase">
                   Preserving India&apos;s Legacy
@@ -128,7 +135,7 @@ export default function Footer() {
       <div className="border-t border-border">
         <div className="container-heritage py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-text-light">
-            © {new Date().getFullYear()} Heritage Pulse. All rights reserved.
+            © {new Date().getFullYear()} Dharohar. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-text-light">
             <Link href="/privacy" className="hover:text-primary transition-colors">

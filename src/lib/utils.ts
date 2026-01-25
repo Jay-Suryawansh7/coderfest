@@ -24,6 +24,18 @@ export function formatDate(date: string | Date): string {
 }
 
 /**
+ * Format date for event display
+ */
+export function formatEventDate(date: string | Date): string {
+  return new Date(date).toLocaleDateString("en-IN", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+/**
  * Format price in Indian Rupees
  */
 export function formatPrice(amount: number): string {

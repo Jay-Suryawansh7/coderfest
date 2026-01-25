@@ -48,7 +48,7 @@ export default function HeroSection({
     <section ref={heroRef} className="hero">
       {/* Background Image with Overlay */}
       <div className="hero__background">
-        <div 
+        <div
           className="hero__image"
           style={{ transform: `translateY(${parallaxOffset * 0.5}px)` }}
         />
@@ -181,7 +181,7 @@ export default function HeroSection({
         .hero__image {
           position: absolute;
           inset: -10%;
-          background-image: url("https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1920&h=1080&fit=crop");
+          background-image: url("/images/red-fort.jpg");
           background-size: cover;
           background-position: center;
           will-change: transform;

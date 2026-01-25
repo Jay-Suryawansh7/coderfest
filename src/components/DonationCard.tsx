@@ -1,4 +1,5 @@
-import { type DonationTier, formatPrice } from "@/lib/mockData";
+import { type DonationTier } from "@/lib/mockData";
+import { formatPrice } from "@/lib/utils";
 
 interface DonationCardProps {
   tier: DonationTier;
@@ -7,11 +8,10 @@ interface DonationCardProps {
 export default function DonationCard({ tier }: DonationCardProps) {
   return (
     <div
-      className={`relative rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 ${
-        tier.highlighted
+      className={`relative rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 ${tier.highlighted
           ? "bg-gradient-to-br from-primary to-primary-dark text-white shadow-2xl scale-105"
           : "bg-white border border-border shadow-lg hover:shadow-xl"
-      }`}
+        }`}
     >
       {/* Highlighted Badge */}
       {tier.highlighted && (
@@ -24,24 +24,21 @@ export default function DonationCard({ tier }: DonationCardProps) {
         {/* Header */}
         <div className="text-center mb-6">
           <h3
-            className={`font-heading text-xl font-semibold mb-2 ${
-              tier.highlighted ? "text-white" : "text-text"
-            }`}
+            className={`font-heading text-xl font-semibold mb-2 ${tier.highlighted ? "text-white" : "text-text"
+              }`}
           >
             {tier.name}
           </h3>
           <div className="flex items-baseline justify-center gap-1">
             <span
-              className={`text-4xl font-heading font-bold ${
-                tier.highlighted ? "text-white" : "text-primary"
-              }`}
+              className={`text-4xl font-heading font-bold ${tier.highlighted ? "text-white" : "text-primary"
+                }`}
             >
-              {formatPrice(tier.amount, tier.currency)}
+              {formatPrice(tier.amount)}
             </span>
             <span
-              className={`text-sm ${
-                tier.highlighted ? "text-white/70" : "text-text-muted"
-              }`}
+              className={`text-sm ${tier.highlighted ? "text-white/70" : "text-text-muted"
+                }`}
             >
               /month
             </span>
@@ -50,9 +47,8 @@ export default function DonationCard({ tier }: DonationCardProps) {
 
         {/* Description */}
         <p
-          className={`text-center text-sm mb-6 ${
-            tier.highlighted ? "text-white/80" : "text-text-muted"
-          }`}
+          className={`text-center text-sm mb-6 ${tier.highlighted ? "text-white/80" : "text-text-muted"
+            }`}
         >
           {tier.description}
         </p>
@@ -62,9 +58,8 @@ export default function DonationCard({ tier }: DonationCardProps) {
           {tier.benefits.map((benefit, index) => (
             <li key={index} className="flex items-start gap-3">
               <svg
-                className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
-                  tier.highlighted ? "text-accent" : "text-primary"
-                }`}
+                className={`w-5 h-5 flex-shrink-0 mt-0.5 ${tier.highlighted ? "text-accent" : "text-primary"
+                  }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -77,9 +72,8 @@ export default function DonationCard({ tier }: DonationCardProps) {
                 />
               </svg>
               <span
-                className={`text-sm ${
-                  tier.highlighted ? "text-white/90" : "text-text-muted"
-                }`}
+                className={`text-sm ${tier.highlighted ? "text-white/90" : "text-text-muted"
+                  }`}
               >
                 {benefit}
               </span>
@@ -89,11 +83,10 @@ export default function DonationCard({ tier }: DonationCardProps) {
 
         {/* CTA */}
         <button
-          className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-300 ${
-            tier.highlighted
+          className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-300 ${tier.highlighted
               ? "bg-white text-primary hover:bg-surface"
               : "bg-primary text-white hover:bg-primary-dark"
-          }`}
+            }`}
         >
           Choose {tier.name}
         </button>

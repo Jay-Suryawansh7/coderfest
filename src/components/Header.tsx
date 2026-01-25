@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 
 /* ═══════════════════════════════════════════════════════════════════════════════
-   HEADER/NAVBAR — Heritage Pulse
+   HEADER/NAVBAR — Dharohar
    Sticky navigation with mobile sheet overlay
 ═══════════════════════════════════════════════════════════════════════════════ */
 
@@ -90,20 +90,26 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
         <div className="container-heritage">
           <nav className="header__nav" role="navigation" aria-label="Main navigation">
             {/* Logo */}
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="header__logo"
               onClick={() => handleNavClick("/", "Home")}
             >
               <div className="header__logo-mark">
-                <div className="header__logo-mark-bg" />
-                <div className="header__logo-mark-inner">
-                  <span>H</span>
-                </div>
+                <svg
+                  className="w-full h-full text-primary"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M3 21h18M5 21v-7l8-5 8 5v7M6 10l6-3.5L18 10" />
+                </svg>
               </div>
               <div className="header__logo-text">
-                <span className="header__logo-heritage">Heritage</span>
-                <span className="header__logo-pulse">Pulse</span>
+                <span className="header__logo-brand">Dharohar</span>
               </div>
             </Link>
 
@@ -174,7 +180,7 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
         aria-label="Navigation menu"
       >
         {/* Backdrop */}
-        <div 
+        <div
           className="sheet__backdrop"
           onClick={() => setIsSheetOpen(false)}
           aria-hidden="true"
@@ -185,8 +191,7 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
           {/* Sheet Header */}
           <div className="sheet__header">
             <div className="header__logo-text">
-              <span className="header__logo-heritage">Heritage</span>
-              <span className="header__logo-pulse">Pulse</span>
+              <span className="header__logo-brand">Dharohar</span>
             </div>
             <button
               onClick={() => setIsSheetOpen(false)}
@@ -317,61 +322,21 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
 
         .header__logo-mark {
           position: relative;
-          width: 40px;
-          height: 40px;
+          width: 32px;
+          height: 32px;
+          color: #8B3A1F;
         }
 
-        .header__logo-mark-bg {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(135deg, #8B3A1F 0%, #6B2A15 100%);
-          border-radius: 10px;
-          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .header__logo:hover .header__logo-mark-bg {
-          transform: rotate(6deg);
-        }
-
-        .header__logo-mark-inner {
-          position: absolute;
-          inset: 3px;
-          background: #FAF3E8;
-          border-radius: 7px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .header__logo-mark-inner span {
+        .header__logo-brand {
           font-family: var(--font-heading);
           font-weight: 700;
-          font-size: 18px;
-          color: #8B3A1F;
+          font-size: 24px;
+          color: #8B3A1F; /* Primary text color */
+          line-height: 1;
+          letter-spacing: -0.02em;
         }
 
-        .header__logo-text {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .header__logo-heritage {
-          font-family: var(--font-heading);
-          font-weight: 600;
-          font-size: 18px;
-          color: #8B3A1F;
-          line-height: 1.1;
-          letter-spacing: -0.01em;
-        }
-
-        .header__logo-pulse {
-          font-family: var(--font-body);
-          font-weight: 500;
-          font-size: 11px;
-          color: #5A4D3B;
-          text-transform: uppercase;
-          letter-spacing: 0.15em;
-        }
+        /* Removed old logo styles */
 
         /* ─────────────────────────── Desktop Links ─────────────────────────── */
 

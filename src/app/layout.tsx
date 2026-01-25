@@ -19,7 +19,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Heritage Pulse — Preserving India's Cultural Legacy",
+  title: "Dharohar — Preserving India's Cultural Legacy",
   description:
     "Discover, explore, and help preserve India's magnificent cultural heritage. Join our community of heritage enthusiasts dedicated to protecting monuments, traditions, and stories for future generations.",
   keywords: [
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     "archaeology",
   ],
   openGraph: {
-    title: "Heritage Pulse — Preserving India's Cultural Legacy",
+    title: "Dharohar — Preserving India's Cultural Legacy",
     description:
       "Discover, explore, and help preserve India's magnificent cultural heritage.",
     type: "website",

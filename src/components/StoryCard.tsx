@@ -1,25 +1,23 @@
 import Link from "next/link";
-import { type Story, formatDate } from "@/lib/mockData";
+import Image from "next/image";
+import { type Story, type StoryCategory } from "@/lib/mockData";
+import { formatDate } from "@/lib/utils";
 
 interface StoryCardProps {
   story: Story;
   variant?: "default" | "featured" | "horizontal";
 }
 
-const categoryColors: Record<Story["category"], string> = {
-  restoration: "bg-emerald-100 text-emerald-700",
-  discovery: "bg-sky-100 text-sky-700",
-  tradition: "bg-amber-100 text-amber-700",
-  community: "bg-rose-100 text-rose-700",
-  architecture: "bg-violet-100 text-violet-700",
+const categoryColors: Record<StoryCategory, string> = {
+  Heritage: "bg-emerald-100 text-emerald-700",
+  Architecture: "bg-violet-100 text-violet-700",
+  "Oral History": "bg-amber-100 text-amber-700",
 };
 
-const categoryIcons: Record<Story["category"], string> = {
-  restoration: "🔧",
-  discovery: "🔍",
-  tradition: "🎭",
-  community: "👥",
-  architecture: "🏛️",
+const categoryIcons: Record<StoryCategory, string> = {
+  Heritage: "🏺",
+  Architecture: "🏛️",
+  "Oral History": "📜",
 };
 
 export default function StoryCard({ story, variant = "default" }: StoryCardProps) {
@@ -32,10 +30,20 @@ export default function StoryCard({ story, variant = "default" }: StoryCardProps
         <div className="grid md:grid-cols-2">
           {/* Image */}
           <div className="aspect-[4/3] md:aspect-auto bg-gradient-to-br from-primary/20 to-accent/20 relative">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-7xl opacity-30">{categoryIcons[story.category]}</span>
-            </div>
-            <div className="absolute top-4 left-4 px-3 py-1 bg-accent text-text text-xs font-semibold rounded-full">
+            {story.image ? (
+              <Image
+                src={story.image}
+                alt={story.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-7xl opacity-30">{categoryIcons[story.category]}</span>
+              </div>
+            )}
+            <div className="absolute top-4 left-4 px-3 py-1 bg-accent text-text text-xs font-semibold rounded-full z-10">
               Featured Story
             </div>
           </div>
@@ -43,7 +51,7 @@ export default function StoryCard({ story, variant = "default" }: StoryCardProps
           {/* Content */}
           <div className="p-8 flex flex-col justify-center">
             <span className={`inline-flex self-start px-3 py-1 text-xs font-medium rounded-full mb-4 ${categoryColors[story.category]}`}>
-              {story.category.charAt(0).toUpperCase() + story.category.slice(1)}
+              {story.category}
             </span>
 
             <h3 className="font-heading text-2xl font-semibold text-text mb-3 group-hover:text-primary transition-colors">
@@ -63,7 +71,7 @@ export default function StoryCard({ story, variant = "default" }: StoryCardProps
               <div>
                 <p className="text-sm font-medium text-text">{story.author}</p>
                 <p className="text-xs text-text-muted">
-                  {formatDate(story.date)} • {story.readTime} min read
+                  {formatDate(story.date)} • {story.readingTime} min read
                 </p>
               </div>
             </div>
@@ -79,8 +87,18 @@ export default function StoryCard({ story, variant = "default" }: StoryCardProps
         href={`/stories/${story.id}`}
         className="flex gap-4 p-4 bg-white rounded-xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 group"
       >
-        <div className="w-20 h-20 rounded-lg bg-gradient-to-br from-surface to-surface-warm flex-shrink-0 flex items-center justify-center">
-          <span className="text-3xl">{categoryIcons[story.category]}</span>
+        <div className="w-20 h-20 rounded-lg bg-gradient-to-br from-surface to-surface-warm flex-shrink-0 flex items-center justify-center overflow-hidden relative">
+          {story.image ? (
+            <Image
+              src={story.image}
+              alt={story.title}
+              fill
+              className="object-cover"
+              sizes="80px"
+            />
+          ) : (
+            <span className="text-3xl">{categoryIcons[story.category]}</span>
+          )}
         </div>
         <div className="flex-1 min-w-0">
           <span className={`inline-block px-2 py-0.5 text-xs font-medium rounded-full mb-2 ${categoryColors[story.category]}`}>
@@ -103,16 +121,27 @@ export default function StoryCard({ story, variant = "default" }: StoryCardProps
     >
       {/* Image */}
       <div className="aspect-[16/10] bg-gradient-to-br from-surface to-surface-warm relative overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-5xl opacity-30 group-hover:scale-110 transition-transform duration-500">
-            {categoryIcons[story.category]}
-          </span>
+        {story.image ? (
+          <Image
+            src={story.image}
+            alt={story.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-5xl opacity-30 group-hover:scale-110 transition-transform duration-500">
+              {categoryIcons[story.category]}
+            </span>
+          </div>
+        )}
+
+        <div className={`absolute top-3 left-3 px-2 py-0.5 text-xs font-medium rounded-full z-10 ${categoryColors[story.category]}`}>
+          {story.category}
         </div>
-        <div className={`absolute top-3 left-3 px-2 py-0.5 text-xs font-medium rounded-full ${categoryColors[story.category]}`}>
-          {story.category.charAt(0).toUpperCase() + story.category.slice(1)}
-        </div>
-        <div className="absolute bottom-3 right-3 px-2 py-1 bg-white/90 backdrop-blur-sm rounded text-xs text-text-muted">
-          {story.readTime} min read
+        <div className="absolute bottom-3 right-3 px-2 py-1 bg-white/90 backdrop-blur-sm rounded text-xs text-text-muted z-10">
+          {story.readingTime} min read
         </div>
       </div>
 
@@ -141,3 +170,4 @@ export default function StoryCard({ story, variant = "default" }: StoryCardProps
     </Link>
   );
 }
+

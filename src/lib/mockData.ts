@@ -56,6 +56,9 @@ export interface DonationTier {
   name: string;
   benefits: string[];
   color: "maroon" | "gold" | "bronze";
+  description: string;
+  highlighted?: boolean;
+  currency?: string;
 }
 
 export interface CommunityPost {
@@ -511,6 +514,7 @@ export const DONATIONS: DonationTier[] = [
     amount: 500,
     name: "Heritage Guardian",
     color: "bronze",
+    description: "Support our ongoing preservation efforts and become a part of the heritage community.",
     benefits: [
       "Digital certificate of appreciation",
       "Monthly newsletter with restoration updates",
@@ -522,6 +526,8 @@ export const DONATIONS: DonationTier[] = [
     amount: 2000,
     name: "Culture Champion",
     color: "gold",
+    highlighted: true,
+    description: "Deepen your impact and enjoy exclusive access to our cultural treasures and events.",
     benefits: [
       "All Heritage Guardian benefits",
       "Exclusive behind-the-scenes videos",
@@ -535,6 +541,7 @@ export const DONATIONS: DonationTier[] = [
     amount: 5000,
     name: "Legacy Patron",
     color: "maroon",
+    description: "Leave a lasting legacy with significant contributions to major restoration projects.",
     benefits: [
       "All Culture Champion benefits",
       "VIP access to any 2 events per year",
@@ -619,33 +626,7 @@ export function getUpcomingEvents(count: number = 5): Event[] {
     .slice(0, count);
 }
 
-/**
- * Get event availability percentage
- */
-export function getEventAvailability(event: Event): number {
-  return Math.round(((event.capacity - event.booked) / event.capacity) * 100);
-}
-
-/**
- * Format price in INR
- */
-export function formatPrice(price: number): string {
-  if (price === 0) return "Free";
-  return `₹${price.toLocaleString("en-IN")}`;
-}
-
-/**
- * Format date for display
- */
-export function formatEventDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-IN", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
+// Helper functions removed (moved to utils.ts or redundant)
 
 /**
  * Get monument by slug/id
@@ -659,4 +640,18 @@ export function getMonumentById(id: string): Monument | undefined {
  */
 export function getStoryBySlug(slug: string): Story | undefined {
   return STORIES.find(s => s.slug === slug);
+}
+
+/**
+ * Get featured events (alias for upcoming)
+ */
+export function getFeaturedEvents(count: number = 5): Event[] {
+  return getUpcomingEvents(count);
+}
+
+/**
+ * Get featured stories
+ */
+export function getFeaturedStories(count: number = 3): Story[] {
+  return STORIES.slice(0, count);
 }
