@@ -77,7 +77,7 @@ export default function DonatePage() {
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto items-start">
             {donationTiers.map((tier) => (
-              <DonationCard key={tier.id} tier={tier} />
+              <DonationCard key={tier.name} tier={tier} />
             ))}
           </div>
 

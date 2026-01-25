@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import Image from "next/image";
-import { MONUMENTS, type Monument } from "@/lib/mockData";
+import type { Monument } from "@/lib/mockData";
+import "leaflet/dist/leaflet.css";
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    MAP SECTION — Heritage Pulse
@@ -39,18 +39,18 @@ const CATEGORY_COLORS = {
 } as const;
 
 interface MapSectionProps {
-  markers?: Monument[];
+  markers: Monument[];
   onMarkerClick?: (monumentId: string) => void;
 }
 
 // Custom marker icon creator
 function createCustomIcon(category: keyof typeof CATEGORY_COLORS) {
   if (typeof window === "undefined") return null;
-
+  
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const L = require("leaflet");
   const color = CATEGORY_COLORS[category];
-
+  
   const svgIcon = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="32" height="48">
       <defs>
@@ -63,7 +63,7 @@ function createCustomIcon(category: keyof typeof CATEGORY_COLORS) {
       ${getCategorySymbol(category)}
     </svg>
   `;
-
+  
   return L.divIcon({
     html: svgIcon,
     className: "custom-marker",
@@ -91,17 +91,17 @@ function getCategorySymbol(category: string): string {
   }
 }
 
-export default function MapSection({ markers = MONUMENTS, onMarkerClick }: MapSectionProps) {
+export default function MapSection({ markers, onMarkerClick }: MapSectionProps) {
   const [isClient, setIsClient] = useState(false);
   const [icons, setIcons] = useState<Record<string, unknown>>({});
 
   // Handle SSR
   useEffect(() => {
     setIsClient(true);
-
+    
     // Import Leaflet CSS
-    import("leaflet/dist/leaflet.css");
-
+    // Leaflet CSS imported at top level
+    
     // Create icons for each category
     const categoryIcons: Record<string, unknown> = {};
     Object.keys(CATEGORY_COLORS).forEach((category) => {
@@ -190,12 +190,10 @@ export default function MapSection({ markers = MONUMENTS, onMarkerClick }: MapSe
                 <Popup>
                   <div className="map-popup">
                     <div className="map-popup__image-wrapper">
-                      <Image
+                      <img
                         src={monument.image}
                         alt={monument.name}
-                        fill
-                        className="map-popup__image object-cover"
-                        sizes="(max-width: 768px) 100vw, 280px"
+                        className="map-popup__image"
                       />
                       <span
                         className="map-popup__category"

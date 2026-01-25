@@ -6,11 +6,12 @@ import { stories, type Story } from "@/lib/mockData";
 
 const categoryFilters: { id: Story["category"] | "all"; label: string }[] = [
   { id: "all", label: "All Stories" },
-  { id: "restoration", label: "Restoration" },
-  { id: "discovery", label: "Discovery" },
-  { id: "tradition", label: "Tradition" },
-  { id: "community", label: "Community" },
-  { id: "architecture", label: "Architecture" },
+  { id: "Heritage", label: "Heritage" },
+  { id: "Architecture", label: "Architecture" },
+  { id: "Oral History", label: "Oral History" },
+  { id: "Restoration", label: "Restoration" },
+  { id: "Tradition", label: "Tradition" },
+  { id: "Community", label: "Community" },
 ];
 
 export default function StoriesPage() {

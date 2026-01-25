@@ -6,7 +6,7 @@ import { monuments } from "@/lib/mockData";
 
 const filters = [
   { id: "all", label: "All Sites", count: monuments.length },
-  { id: "unesco", label: "UNESCO", count: monuments.filter((m) => m.unescoStatus).length },
+  { id: "unesco", label: "UNESCO", count: monuments.filter((m) => m.category === "UNESCO").length },
   { id: "north", label: "North India", count: 6 },
   { id: "south", label: "South India", count: 4 },
   { id: "west", label: "West India", count: 3 },
@@ -32,7 +32,7 @@ export default function ExplorePage() {
 
     // Category filter
     if (activeFilter === "all") return true;
-    if (activeFilter === "unesco") return monument.unescoStatus;
+    if (activeFilter === "unesco") return monument.category === "UNESCO";
     if (activeFilter === "north") {
       return ["Delhi", "Uttar Pradesh", "Rajasthan", "Punjab"].includes(monument.state);
     }

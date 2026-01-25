@@ -8,16 +8,20 @@ interface StoryCardProps {
   variant?: "default" | "featured" | "horizontal";
 }
 
-const categoryColors: Record<StoryCategory, string> = {
-  Heritage: "bg-emerald-100 text-emerald-700",
-  Architecture: "bg-violet-100 text-violet-700",
-  "Oral History": "bg-amber-100 text-amber-700",
+const categoryColors: Record<Story["category"], string> = {
+  restoration: "bg-emerald-100 text-emerald-700",
+  discovery: "bg-sky-100 text-sky-700",
+  tradition: "bg-amber-100 text-amber-700",
+  community: "bg-rose-100 text-rose-700",
+  architecture: "bg-violet-100 text-violet-700",
 };
 
-const categoryIcons: Record<StoryCategory, string> = {
-  Heritage: "🏺",
-  Architecture: "🏛️",
-  "Oral History": "📜",
+const categoryIcons: Record<Story["category"], string> = {
+  restoration: "🔧",
+  discovery: "🔍",
+  tradition: "🎭",
+  community: "👥",
+  architecture: "🏛️",
 };
 
 export default function StoryCard({ story, variant = "default" }: StoryCardProps) {
@@ -121,24 +125,13 @@ export default function StoryCard({ story, variant = "default" }: StoryCardProps
     >
       {/* Image */}
       <div className="aspect-[16/10] bg-gradient-to-br from-surface to-surface-warm relative overflow-hidden">
-        {story.image ? (
-          <Image
-            src={story.image}
-            alt={story.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-5xl opacity-30 group-hover:scale-110 transition-transform duration-500">
-              {categoryIcons[story.category]}
-            </span>
-          </div>
-        )}
-
-        <div className={`absolute top-3 left-3 px-2 py-0.5 text-xs font-medium rounded-full z-10 ${categoryColors[story.category]}`}>
-          {story.category}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-5xl opacity-30 group-hover:scale-110 transition-transform duration-500">
+            {categoryIcons[story.category]}
+          </span>
+        </div>
+        <div className={`absolute top-3 left-3 px-2 py-0.5 text-xs font-medium rounded-full ${categoryColors[story.category]}`}>
+          {story.category.charAt(0).toUpperCase() + story.category.slice(1)}
         </div>
         <div className="absolute bottom-3 right-3 px-2 py-1 bg-white/90 backdrop-blur-sm rounded text-xs text-text-muted z-10">
           {story.readingTime} min read

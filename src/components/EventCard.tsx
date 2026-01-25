@@ -1,23 +1,27 @@
 import Link from "next/link";
-import Image from "next/image";
-import { type Event, type EventCategory } from "@/lib/mockData";
-import { formatPrice, formatEventDate } from "@/lib/utils";
+import { type Event, formatPrice, formatDate } from "@/lib/mockData";
 
 interface EventCardProps {
   event: Event;
   variant?: "default" | "featured" | "compact";
 }
 
-const categoryIcons: Record<EventCategory, string> = {
+const categoryIcons: Record<Event["category"], string> = {
   Festival: "🎭",
   Exhibition: "🖼️",
-  Performance: "💃",
+  Workshop: "🎨",
+  "Heritage Walk": "🚶",
+  Lecture: "📚",
+  Performance: "🎻",
 };
 
-const categoryColors: Record<EventCategory, string> = {
+const categoryColors: Record<Event["category"], string> = {
   Festival: "bg-pink-100 text-pink-700",
   Exhibition: "bg-purple-100 text-purple-700",
-  Performance: "bg-amber-100 text-amber-700",
+  Workshop: "bg-blue-100 text-blue-700",
+  "Heritage Walk": "bg-green-100 text-green-700",
+  Lecture: "bg-amber-100 text-amber-700",
+  Performance: "bg-rose-100 text-rose-700",
 };
 
 export default function EventCard({ event, variant = "default" }: EventCardProps) {
@@ -34,7 +38,7 @@ export default function EventCard({ event, variant = "default" }: EventCardProps
           <h4 className="font-medium text-text truncate group-hover:text-primary transition-colors">
             {event.title}
           </h4>
-          <p className="text-sm text-text-muted">{formatEventDate(event.date)} • {event.city}</p>
+          <p className="text-sm text-text-muted">{formatDate(event.date)} • {event.city}</p>
         </div>
         <span className="text-sm font-semibold text-primary flex-shrink-0">
           {formatPrice(event.price)}
@@ -51,26 +55,15 @@ export default function EventCard({ event, variant = "default" }: EventCardProps
       >
         {/* Image */}
         <div className="aspect-[16/9] bg-gradient-to-br from-primary/20 to-accent/20 relative">
-          {event.image ? (
-            <Image
-              src={event.image}
-              alt={event.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-6xl opacity-50">{categoryIcons[event.category]}</span>
-            </div>
-          )}
-
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-6xl opacity-50">{categoryIcons[event.category]}</span>
+          </div>
           {/* Featured Badge */}
-          <div className="absolute top-4 left-4 px-3 py-1 bg-accent text-text text-xs font-semibold rounded-full z-10">
+          <div className="absolute top-4 left-4 px-3 py-1 bg-accent text-text text-xs font-semibold rounded-full">
             Featured
           </div>
           {/* Price */}
-          <div className="absolute bottom-4 right-4 px-3 py-1 bg-white/90 backdrop-blur-sm text-primary font-semibold rounded-lg shadow-lg z-10">
+          <div className="absolute bottom-4 right-4 px-3 py-1 bg-white/90 backdrop-blur-sm text-primary font-semibold rounded-lg shadow-lg">
             {formatPrice(event.price)}
           </div>
         </div>
@@ -96,7 +89,7 @@ export default function EventCard({ event, variant = "default" }: EventCardProps
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              {formatEventDate(event.date)}
+              {formatDate(event.date)}
             </div>
             <div className="flex items-center gap-2 text-sm text-text-muted">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,23 +111,13 @@ export default function EventCard({ event, variant = "default" }: EventCardProps
     >
       {/* Image */}
       <div className="aspect-[4/3] bg-gradient-to-br from-surface to-surface-warm relative overflow-hidden">
-        {event.image ? (
-          <Image
-            src={event.image}
-            alt={event.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-5xl opacity-40 group-hover:scale-110 transition-transform duration-500">
-              {categoryIcons[event.category]}
-            </span>
-          </div>
-        )}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-5xl opacity-40 group-hover:scale-110 transition-transform duration-500">
+            {categoryIcons[event.category]}
+          </span>
+        </div>
         {/* Type Badge */}
-        <div className={`absolute top-3 left-3 px-2 py-0.5 text-xs font-medium rounded-full z-10 ${categoryColors[event.category]}`}>
+        <div className={`absolute top-3 left-3 px-2 py-0.5 text-xs font-medium rounded-full ${categoryColors[event.category]}`}>
           {event.category}
         </div>
       </div>
@@ -150,7 +133,7 @@ export default function EventCard({ event, variant = "default" }: EventCardProps
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            {formatEventDate(event.date)}
+            {formatDate(event.date)}
           </span>
         </div>
 
@@ -164,4 +147,3 @@ export default function EventCard({ event, variant = "default" }: EventCardProps
     </Link>
   );
 }
-
