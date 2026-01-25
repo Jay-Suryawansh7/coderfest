@@ -1,65 +1,120 @@
-import Image from "next/image";
+import Link from "next/link";
+import HeroSection from "@/components/HeroSection";
+import MapSection from "@/components/MapSection";
+import EventCard from "@/components/EventCard";
+import StoryCard from "@/components/StoryCard";
+import { getFeaturedEvents, getFeaturedStories } from "@/lib/mockData";
 
-export default function Home() {
+export default function HomePage() {
+  const featuredEvents = getFeaturedEvents().slice(0, 3);
+  const featuredStories = getFeaturedStories().slice(0, 3);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <>
+      {/* Hero Section */}
+      <HeroSection />
+
+      {/* Map Section */}
+      <MapSection />
+
+      {/* Featured Events Section */}
+      <section className="section-padding">
+        <div className="container-heritage">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div>
+              <span className="inline-block px-4 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
+                Upcoming Experiences
+              </span>
+              <h2 className="text-text">
+                Cultural <span className="text-primary">Events</span>
+              </h2>
+            </div>
+            <Link
+              href="/events"
+              className="inline-flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              View All Events
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+
+          {/* Events Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredEvents.map((event) => (
+              <EventCard key={event.id} event={event} variant="featured" />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Stories Section */}
+      <section className="section-padding bg-gradient-to-b from-surface-cream to-surface">
+        <div className="container-heritage">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div>
+              <span className="inline-block px-4 py-1 bg-accent/20 text-accent-dark text-sm font-medium rounded-full mb-4">
+                Heritage Narratives
+              </span>
+              <h2 className="text-text">
+                Stories That <span className="text-primary">Matter</span>
+              </h2>
+            </div>
+            <Link
+              href="/stories"
+              className="inline-flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              Read All Stories
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+
+          {/* Stories Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredStories.map((story) => (
+              <StoryCard key={story.id} story={story} />
+            ))}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* CTA Section */}
+      <section className="section-padding">
+        <div className="container-heritage">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary-dark p-12 md:p-16 text-center">
+            {/* Decorative Elements */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-accent/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+
+            <div className="relative z-10">
+              <h2 className="text-white mb-4">
+                Join the Movement to
+                <span className="block text-accent">Preserve Our Heritage</span>
+              </h2>
+              <p className="text-white/80 max-w-2xl mx-auto mb-8">
+                Every contribution helps protect India&apos;s irreplaceable cultural treasures.
+                Become part of our community of heritage guardians today.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link href="/donate" className="btn btn-accent">
+                  Make a Donation
+                </Link>
+                <Link
+                  href="/community"
+                  className="btn bg-white/10 text-white border border-white/30 hover:bg-white/20"
+                >
+                  Join Community
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+    </>
   );
 }
