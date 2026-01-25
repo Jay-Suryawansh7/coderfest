@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ChatAssistant from "@/components/ChatAssistant";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -53,6 +54,7 @@ export default function RootLayout({
           <div className="flex min-h-screen flex-col">
             <Header />
             <main className="flex-1">{children}</main>
+            <ChatAssistant />
             <Footer />
           </div>
         </body>
