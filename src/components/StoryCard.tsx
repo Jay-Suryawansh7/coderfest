@@ -9,19 +9,21 @@ interface StoryCardProps {
 }
 
 const categoryColors: Record<Story["category"], string> = {
-  restoration: "bg-emerald-100 text-emerald-700",
-  discovery: "bg-sky-100 text-sky-700",
-  tradition: "bg-amber-100 text-amber-700",
-  community: "bg-rose-100 text-rose-700",
-  architecture: "bg-violet-100 text-violet-700",
+  Restoration: "bg-emerald-100 text-emerald-700",
+  Heritage: "bg-sky-100 text-sky-700", // Replaced discovery
+  Tradition: "bg-amber-100 text-amber-700",
+  Community: "bg-rose-100 text-rose-700",
+  Architecture: "bg-violet-100 text-violet-700",
+  "Oral History": "bg-cyan-100 text-cyan-700",
 };
 
 const categoryIcons: Record<Story["category"], string> = {
-  restoration: "🔧",
-  discovery: "🔍",
-  tradition: "🎭",
-  community: "👥",
-  architecture: "🏛️",
+  Restoration: "🔧",
+  Heritage: "🔍", // mapped from discovery
+  Tradition: "🎭",
+  Community: "👥",
+  Architecture: "🏛️",
+  "Oral History": "🗣️",
 };
 
 export default function StoryCard({ story, variant = "default" }: StoryCardProps) {
@@ -75,7 +77,7 @@ export default function StoryCard({ story, variant = "default" }: StoryCardProps
               <div>
                 <p className="text-sm font-medium text-text">{story.author}</p>
                 <p className="text-xs text-text-muted">
-                  {formatDate(story.date)} • {story.readingTime} min read
+                  {formatDate(story.date)} • {story.readTime} min read
                 </p>
               </div>
             </div>
@@ -131,10 +133,10 @@ export default function StoryCard({ story, variant = "default" }: StoryCardProps
           </span>
         </div>
         <div className={`absolute top-3 left-3 px-2 py-0.5 text-xs font-medium rounded-full ${categoryColors[story.category]}`}>
-          {story.category.charAt(0).toUpperCase() + story.category.slice(1)}
+          {story.category}
         </div>
         <div className="absolute bottom-3 right-3 px-2 py-1 bg-white/90 backdrop-blur-sm rounded text-xs text-text-muted z-10">
-          {story.readingTime} min read
+          {story.readTime} min read
         </div>
       </div>
 
