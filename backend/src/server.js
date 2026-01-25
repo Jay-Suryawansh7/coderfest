@@ -10,12 +10,14 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const path = require('path'); // Added path for express.static
 
 const config = require('./config');
-const logger = require('./utils/logger');
-const errorHandler = require('./middleware/errorHandler');
-const notFoundHandler = require('./middleware/notFoundHandler');
+const logger = require('./config/logger'); // Changed path for logger
+const { errorHandler, ApiError } = require('./middleware/errorHandler'); // Changed import style
+const { notFoundHandler } = require('./middleware/notFoundHandler'); // Changed import style
 const rateLimiter = require('./middleware/rateLimiter');
+const requestLogger = require('./middleware/requestLogger'); // New import
 
 // Import routes
 const healthRoutes = require('./routes/health.routes');
@@ -68,20 +70,12 @@ app.use(cors(corsOptions));
 // ===========================================
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.static(path.join(__dirname, 'public'))); // Added static files middleware
 
 // ===========================================
 // Request Logging Middleware
 // ===========================================
-app.use((req, res, next) => {
-    const start = Date.now();
-
-    res.on('finish', () => {
-        const duration = Date.now() - start;
-        logger.http(`${req.method} ${req.originalUrl} ${res.statusCode} - ${duration}ms`);
-    });
-
-    next();
-});
+app.use(requestLogger);
 
 // ===========================================
 // Rate Limiting (applied to API routes)

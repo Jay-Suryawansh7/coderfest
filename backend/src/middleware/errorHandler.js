@@ -1,103 +1,74 @@
 /**
- * Heritage Pulse - Error Handler Middleware
- * ==========================================
- * Centralized error handling with structured error responses.
+ * Heritage Pulse - Global Error Handler
+ * ======================================
+ * Centralized error handling and detailed logging.
  */
 
-const logger = require('../utils/logger');
+const logger = require('../config/logger');
 
-/**
- * Custom API Error class
- */
+// Custom Error Classes
 class ApiError extends Error {
-    constructor(statusCode, message, details = null) {
+    constructor(message, statusCode, code) {
         super(message);
         this.statusCode = statusCode;
-        this.details = details;
-        this.isOperational = true;
-
-        Error.captureStackTrace(this, this.constructor);
+        this.code = code;
     }
 
-    static badRequest(message, details = null) {
-        return new ApiError(400, message, details);
+    static badRequest(message, code = 'BAD_REQUEST') {
+        return new ApiError(message, 400, code);
     }
 
-    static unauthorized(message = 'Unauthorized') {
-        return new ApiError(401, message);
+    static notFound(message, code = 'NOT_FOUND') {
+        return new ApiError(message, 404, code);
     }
 
-    static forbidden(message = 'Forbidden') {
-        return new ApiError(403, message);
-    }
-
-    static notFound(message = 'Resource not found') {
-        return new ApiError(404, message);
-    }
-
-    static tooManyRequests(message = 'Too many requests') {
-        return new ApiError(429, message);
-    }
-
-    static internal(message = 'Internal server error') {
-        return new ApiError(500, message);
-    }
-
-    static serviceUnavailable(message = 'Service temporarily unavailable') {
-        return new ApiError(503, message);
+    static internal(message, code = 'INTERNAL_ERROR') {
+        return new ApiError(message, 500, code);
     }
 }
 
-/**
- * Error handler middleware
- */
+class ValidationError extends ApiError {
+    constructor(message) {
+        super(message, 400, 'VALIDATION_ERROR');
+    }
+}
+
+class ExternalAPIError extends ApiError {
+    constructor(service, message) {
+        super(`${service} API failed: ${message}`, 502, 'EXTERNAL_API_ERROR');
+    }
+}
+
+// Global Middleware
 const errorHandler = (err, req, res, next) => {
-    // Default error values
-    let statusCode = err.statusCode || 500;
-    let message = err.message || 'Internal Server Error';
-    let details = err.details || null;
-
-    // Handle specific error types
-    if (err.name === 'ValidationError') {
-        statusCode = 400;
-        message = 'Validation Error';
-        details = err.errors || err.message;
-    }
-
-    if (err.name === 'SyntaxError' && err.status === 400 && 'body' in err) {
-        statusCode = 400;
-        message = 'Invalid JSON in request body';
-    }
-
-    if (err.type === 'entity.too.large') {
-        statusCode = 413;
-        message = 'Request payload too large';
-    }
-
-    // Log the error
-    const logLevel = statusCode >= 500 ? 'error' : 'warn';
-    logger[logLevel](`${statusCode} - ${message}`, {
-        path: req.path,
+    // Log full error details
+    logger.error({
+        message: err.message,
+        stack: err.stack,
+        endpoint: req.originalUrl,
         method: req.method,
         ip: req.ip,
-        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+        code: err.code || 'UNKNOWN_ERROR'
     });
 
-    // Build error response
+    // Determine response format
+    const statusCode = err.statusCode || 500;
     const errorResponse = {
         success: false,
         error: {
-            statusCode,
-            message,
-            ...(details && { details }),
-            ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
-        },
-        timestamp: new Date().toISOString(),
-        path: req.originalUrl,
+            message: err.message || "Internal Server Error",
+            code: err.code || "UNKNOWN_ERROR",
+            // Include stack trace only in development
+            ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+        }
     };
 
     res.status(statusCode).json(errorResponse);
 };
 
-module.exports = errorHandler;
-module.exports.ApiError = ApiError;
+module.exports = {
+    errorHandler,
+    ApiError,
+    ValidationError,
+    ExternalAPIError
+};

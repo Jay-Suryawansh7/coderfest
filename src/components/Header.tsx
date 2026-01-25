@@ -2,6 +2,13 @@
 
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    HEADER/NAVBAR — Dharohar
@@ -132,6 +139,18 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
 
             {/* Support Button (Desktop) */}
             <div className="header__actions">
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className="header__link">Sign In</button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button className="header__support-btn">Sign Up</button>
+                </SignUpButton>
+              </SignedOut>
+              <SignedIn>
+                <UserButton afterSignOutUrl="/" />
+              </SignedIn>
+
               <Link
                 href="/donate"
                 className="header__support-btn"
@@ -255,6 +274,22 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
 
             {/* Support CTA */}
             <div className="sheet__cta">
+              <div className="flex flex-col gap-4 mb-4">
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <button className="sheet__link w-full justify-center">Sign In</button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <button className="sheet__support-btn">Sign Up</button>
+                  </SignUpButton>
+                </SignedOut>
+                <SignedIn>
+                  <div className="flex justify-center py-2">
+                    <UserButton afterSignOutUrl="/" />
+                  </div>
+                </SignedIn>
+              </div>
+
               <Link
                 href="/donate"
                 className="sheet__support-btn"

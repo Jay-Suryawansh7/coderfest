@@ -53,4 +53,14 @@ router.delete(
     chatController.clearChatHistory
 );
 
+/**
+ * @route   POST /api/chat/heritage-assistant
+ * @desc    Chat with Heritage Assistant AI
+ * @access  Public
+ */
+router.post(
+    '/heritage-assistant',
+    chatController.heritageAssistant
+);
+
 module.exports = router;
