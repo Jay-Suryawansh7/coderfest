@@ -1,4 +1,5 @@
-// src/lib/api.ts
+import { Event, Monument, Story } from "./mockData";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
 type RequestOptions = RequestInit & {
@@ -18,19 +19,26 @@ async function fetchAPI<T>(endpoint: string, options: RequestOptions = {}): Prom
         url += `?${searchParams.toString()}`;
     }
 
-    const response = await fetch(url, {
-        headers: {
-            "Content-Type": "application/json",
-            ...headers,
-        },
-        ...rest,
-    });
+    try {
+        const response = await fetch(url, {
+            headers: {
+                "Content-Type": "application/json",
+                ...headers,
+            },
+            ...rest,
+            // Cache control for Next.js - revalidate every minute
+            next: { revalidate: 60 }
+        });
 
-    if (!response.ok) {
-        throw new Error(`API Error: ${response.statusText}`);
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.statusText}`);
+        }
+
+        return response.json();
+    } catch (error) {
+        console.warn(`API Request failed: ${url}`, error);
+        throw error;
     }
-
-    return response.json();
 }
 
 // ------------------------------------------------------------------
@@ -39,16 +47,19 @@ async function fetchAPI<T>(endpoint: string, options: RequestOptions = {}): Prom
 
 export const api = {
     // Heritage Sites
-    getHeritageSites: (page = 1, limit = 20, query = "") => {
-        return fetchAPI<any>("/heritage", { params: { page, limit, q: query } });
+    getHeritageSites: async (page = 1, limit = 20, query = "") => {
+        const res = await fetchAPI<{ data: Monument[] }>("/heritage", { params: { page, limit, q: query } });
+        return res.data;
     },
 
-    getHeritageSiteById: (id: string) => {
-        return fetchAPI<any>(`/heritage/${id}`);
+    getHeritageSiteById: async (id: string) => {
+        const res = await fetchAPI<{ data: Monument }>(`/heritage/${id}`);
+        return res.data;
     },
 
-    getNearbyHeritageSites: (lat: number, lng: number, radius = 50) => {
-        return fetchAPI<any>("/heritage/nearby", { params: { lat, lng, radius } });
+    getNearbyHeritageSites: async (lat: number, lng: number, radius = 50) => {
+        const res = await fetchAPI<{ data: Monument[] }>("/heritage/nearby", { params: { lat, lng, radius } });
+        return res.data;
     },
 
     discoverHeritage: (location: string, radius = 50, categories: string[] = []) => {

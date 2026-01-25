@@ -3,11 +3,25 @@ import HeroSection from "@/components/HeroSection";
 import MapSection from "@/components/MapSection";
 import EventCard from "@/components/EventCard";
 import StoryCard from "@/components/StoryCard";
-import { getFeaturedEvents, getFeaturedStories, monuments } from "@/lib/mockData";
+import { getFeaturedEvents, getFeaturedStories, monuments as mockMonuments } from "@/lib/mockData";
+import { api } from "@/lib/api";
 
-export default function HomePage() {
-  const featuredEvents = getFeaturedEvents().slice(0, 3);
-  const featuredStories = getFeaturedStories().slice(0, 3);
+export default async function HomePage() {
+  // Default to mocks
+  let monuments = mockMonuments;
+  let featuredEvents = getFeaturedEvents().slice(0, 3);
+  let featuredStories = getFeaturedStories().slice(0, 3);
+
+  // Try fetching from backend
+  try {
+    const apiMonuments = await api.getHeritageSites();
+    if (apiMonuments && apiMonuments.length > 0) {
+      monuments = apiMonuments;
+    }
+    // console.log("Fetched monuments from API", monuments.length);
+  } catch (e) {
+    // console.warn("Using mock data as API is unavailable");
+  }
 
   return (
     <>

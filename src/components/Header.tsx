@@ -137,20 +137,8 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
               ))}
             </ul>
 
-            {/* Support Button (Desktop) */}
+            {/* Actions (Support + Auth) */}
             <div className="header__actions">
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <button className="header__link">Sign In</button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <button className="header__support-btn">Sign Up</button>
-                </SignUpButton>
-              </SignedOut>
-              <SignedIn>
-                <UserButton afterSignOutUrl="/" />
-              </SignedIn>
-
               <Link
                 href="/donate"
                 className="header__support-btn"
@@ -172,6 +160,20 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
                 </svg>
                 Support
               </Link>
+
+              <div className="header__auth">
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <button className="header__auth-link">Sign In</button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <button className="header__auth-btn">Sign Up</button>
+                  </SignUpButton>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton afterSignOutUrl="/" />
+                </SignedIn>
+              </div>
             </div>
 
             {/* Mobile Menu Button */}
@@ -431,11 +433,53 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
           background: #8B3A1F;
         }
 
-        /* ─────────────────────────── Support Button ─────────────────────────── */
+        /* ─────────────────────────── Support & Auth ─────────────────────────── */
 
         .header__actions {
           display: none;
           align-items: center;
+          gap: 16px;
+        }
+
+        .header__auth {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding-left: 16px;
+          border-left: 1px solid rgba(139, 58, 31, 0.2);
+        }
+
+        .header__auth-link {
+          font-family: var(--font-body);
+          font-weight: 500;
+          font-size: 14px;
+          color: #5A4D3B;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          transition: color 0.2s;
+        }
+
+        .header__auth-link:hover {
+          color: #8B3A1F;
+        }
+
+        .header__auth-btn {
+          padding: 8px 16px;
+          background: transparent;
+          border: 1px solid #8B3A1F;
+          color: #8B3A1F;
+          font-family: var(--font-body);
+          font-weight: 500;
+          font-size: 14px;
+          border-radius: 50px;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .header__auth-btn:hover {
+          background: #8B3A1F;
+          color: white;
         }
 
         @media (min-width: 768px) {
