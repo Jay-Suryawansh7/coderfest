@@ -7,19 +7,21 @@ interface StoryCardProps {
 }
 
 const categoryColors: Record<Story["category"], string> = {
-  restoration: "bg-emerald-100 text-emerald-700",
-  discovery: "bg-sky-100 text-sky-700",
-  tradition: "bg-amber-100 text-amber-700",
-  community: "bg-rose-100 text-rose-700",
-  architecture: "bg-violet-100 text-violet-700",
+  Heritage: "bg-amber-100 text-amber-700",
+  Architecture: "bg-violet-100 text-violet-700",
+  "Oral History": "bg-orange-100 text-orange-700",
+  Restoration: "bg-emerald-100 text-emerald-700",
+  Tradition: "bg-rose-100 text-rose-700",
+  Community: "bg-blue-100 text-blue-700",
 };
 
 const categoryIcons: Record<Story["category"], string> = {
-  restoration: "🔧",
-  discovery: "🔍",
-  tradition: "🎭",
-  community: "👥",
-  architecture: "🏛️",
+  Heritage: "🏺",
+  Architecture: "🏛️",
+  "Oral History": "🗣️",
+  Restoration: "🔧",
+  Tradition: "🎭",
+  Community: "👥",
 };
 
 export default function StoryCard({ story, variant = "default" }: StoryCardProps) {
@@ -43,7 +45,7 @@ export default function StoryCard({ story, variant = "default" }: StoryCardProps
           {/* Content */}
           <div className="p-8 flex flex-col justify-center">
             <span className={`inline-flex self-start px-3 py-1 text-xs font-medium rounded-full mb-4 ${categoryColors[story.category]}`}>
-              {story.category.charAt(0).toUpperCase() + story.category.slice(1)}
+              {story.category}
             </span>
 
             <h3 className="font-heading text-2xl font-semibold text-text mb-3 group-hover:text-primary transition-colors">
@@ -109,7 +111,7 @@ export default function StoryCard({ story, variant = "default" }: StoryCardProps
           </span>
         </div>
         <div className={`absolute top-3 left-3 px-2 py-0.5 text-xs font-medium rounded-full ${categoryColors[story.category]}`}>
-          {story.category.charAt(0).toUpperCase() + story.category.slice(1)}
+          {story.category}
         </div>
         <div className="absolute bottom-3 right-3 px-2 py-1 bg-white/90 backdrop-blur-sm rounded text-xs text-text-muted">
           {story.readTime} min read

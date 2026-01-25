@@ -6,8 +6,8 @@
 // ─────────────────────────── Type Definitions ───────────────────────────
 
 export type MonumentCategory = "UNESCO" | "Museum" | "Fort" | "Temple" | "Palace";
-export type EventCategory = "Festival" | "Exhibition" | "Performance";
-export type StoryCategory = "Heritage" | "Architecture" | "Oral History";
+export type EventCategory = "Festival" | "Exhibition" | "Performance" | "Workshop" | "Heritage Walk" | "Lecture";
+export type StoryCategory = "Heritage" | "Architecture" | "Oral History" | "Restoration" | "Tradition" | "Community";
 
 export interface Monument {
   id: string;
@@ -31,6 +31,7 @@ export interface Event {
   date: string;
   category: EventCategory;
   price: number;
+  currency: string;
   capacity: number;
   booked: number;
   image: string;
@@ -47,8 +48,9 @@ export interface Story {
   body: string;
   author: string;
   date: string;
-  readingTime: number;
+  readTime: number;
   image: string;
+  featured?: boolean;
 }
 
 export interface DonationTier {
@@ -300,6 +302,7 @@ export const EVENTS: Event[] = [
     date: "2026-11-01",
     category: "Festival",
     price: 500,
+    currency: "INR",
     capacity: 50,
     booked: 38,
     image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=800&h=600&fit=crop",
@@ -313,6 +316,7 @@ export const EVENTS: Event[] = [
     date: "2026-02-15",
     category: "Exhibition",
     price: 300,
+    currency: "INR",
     capacity: 200,
     booked: 156,
     image: "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&h=600&fit=crop",
@@ -326,6 +330,7 @@ export const EVENTS: Event[] = [
     date: "2026-02-20",
     category: "Performance",
     price: 800,
+    currency: "INR",
     capacity: 1000,
     booked: 720,
     image: "https://images.unsplash.com/photo-1545959570-a94084071b5d?w=800&h=600&fit=crop",
@@ -339,6 +344,7 @@ export const EVENTS: Event[] = [
     date: "2026-03-13",
     category: "Festival",
     price: 0,
+    currency: "INR",
     capacity: 500,
     booked: 445,
     image: "https://images.unsplash.com/photo-1576097449798-7c7f90e1248a?w=800&h=600&fit=crop",
@@ -350,8 +356,9 @@ export const EVENTS: Event[] = [
     title: "Banarasi Silk Weaving Workshop",
     city: "Varanasi",
     date: "2026-04-10",
-    category: "Exhibition",
+    category: "Workshop",
     price: 1500,
+    currency: "INR",
     capacity: 20,
     booked: 18,
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
@@ -365,6 +372,7 @@ export const EVENTS: Event[] = [
     date: "2026-03-25",
     category: "Performance",
     price: 1200,
+    currency: "INR",
     capacity: 100,
     booked: 67,
     image: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&h=600&fit=crop",
@@ -376,8 +384,9 @@ export const EVENTS: Event[] = [
     title: "Heritage Photography Expedition",
     city: "Jaipur",
     date: "2026-04-05",
-    category: "Exhibition",
+    category: "Heritage Walk",
     price: 2500,
+    currency: "INR",
     capacity: 15,
     booked: 12,
     image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800&h=600&fit=crop",
@@ -389,8 +398,9 @@ export const EVENTS: Event[] = [
     title: "South Indian Temple Architecture Symposium",
     city: "Chennai",
     date: "2026-05-12",
-    category: "Exhibition",
+    category: "Lecture",
     price: 400,
+    currency: "INR",
     capacity: 150,
     booked: 89,
     image: "https://images.unsplash.com/photo-1603766312810-8a9c8e8c4f9e?w=800&h=600&fit=crop",
@@ -404,6 +414,7 @@ export const EVENTS: Event[] = [
     date: "2026-09-07",
     category: "Festival",
     price: 0,
+    currency: "INR",
     capacity: 300,
     booked: 280,
     image: "https://images.unsplash.com/photo-1567157577867-05ccb1388e66?w=800&h=600&fit=crop",
@@ -417,6 +428,7 @@ export const EVENTS: Event[] = [
     date: "2026-04-18",
     category: "Performance",
     price: 600,
+    currency: "INR",
     capacity: 80,
     booked: 65,
     image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=800&h=600&fit=crop",
@@ -441,8 +453,9 @@ export const STORIES: Story[] = [
 Local historians believe these passages connect Amber Fort to Jaigarh Fort on the hill above, and possibly to the old city of Jaipur itself. In 1976, treasure hunters famously discovered a sealed tunnel that allegedly contained hidden wealth — though what exactly was found remains a state secret to this day. Walking through the fort today, trained eyes can spot the subtle signs of hidden doorways in the walls of the Sheesh Mahal.`,
     author: "Dr. Ravi Sharma",
     date: "2026-01-15",
-    readingTime: 6,
+    readTime: 6,
     image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&h=600&fit=crop",
+    featured: true,
   },
   {
     id: "story-2",
@@ -455,35 +468,35 @@ Local historians believe these passages connect Amber Fort to Jaigarh Fort on th
 In the workshops of Agra, women specializing in semi-precious stone cutting and polishing prepared the thousands of pieces that form the marble inlay patterns. Persian and Indian women skilled in the art of pietra dura (stone inlay) worked for years creating the floral motifs that adorn the cenotaphs. Even the selection of plants for the Charbagh gardens was overseen by the Empress's former ladies-in-waiting, who ensured the garden would bloom with her favorite flowers year-round.`,
     author: "Fatima Khan",
     date: "2026-01-08",
-    readingTime: 8,
+    readTime: 8,
     image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&h=600&fit=crop",
   },
   {
     id: "story-3",
     title: "Last of the Scroll Painters",
     slug: "last-scroll-painters-rajasthan",
-    category: "Oral History",
+    category: "Tradition",
     excerpt: "Meet Shrilal Joshi, one of the last living masters of Phad, the 700-year-old Rajasthani scroll painting tradition.",
     body: `In a small village in Bhilwara district, 82-year-old Shrilal Joshi unfurls a 30-foot canvas painted with scenes from the epic of Pabuji, a Rajasthani folk deity. This is Phad painting — a dying art form that has been passed down through generations of the Joshi caste for over seven centuries.
 
 "When I was young, every village had a Bhopa (priest-singer) who would travel with these scrolls, performing all-night narrations of our heroes," Shrilal recalls. "Now, the young people have televisions. They don't want to sit through a twelve-hour performance." Despite his age, Shrilal still teaches at a small school he founded, where he trains 15 students in the painstaking process of preparing the cloth, mixing natural pigments, and mastering the distinctive style that tells sacred stories.`,
     author: "Priya Mehta",
     date: "2025-12-22",
-    readingTime: 10,
+    readTime: 10,
     image: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&h=600&fit=crop",
   },
   {
     id: "story-4",
     title: "How AI is Saving Temple Sculptures",
     slug: "ai-saving-temple-sculptures",
-    category: "Heritage",
+    category: "Restoration",
     excerpt: "A groundbreaking project uses machine learning to document and digitally preserve thousands of deteriorating temple carvings.",
     body: `At the 1000-year-old Brihadeeswara Temple in Thanjavur, a team of engineers and archaeologists are racing against time. The temple's 16,000 carved figures are eroding at an alarming rate due to pollution and climate change. Their solution: train an AI to create perfect 3D replicas before the originals are lost forever.
 
 Using photogrammetry and neural networks, the team has already documented over 3,000 sculptures in unprecedented detail. The AI can even predict how erosion will progress and suggest which figures need immediate conservation. "We're not trying to replace the originals," explains project lead Dr. Arun Kumar. "We're creating a digital ark for future generations. A thousand years from now, people will be able to see these sculptures exactly as they were in 2025."`,
     author: "Vikram Iyer",
     date: "2025-12-15",
-    readingTime: 7,
+    readTime: 7,
     image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800&h=600&fit=crop",
   },
   {
@@ -497,7 +510,7 @@ Using photogrammetry and neural networks, the team has already documented over 3
 Some of these root bridges are over 500 years old and can support the weight of 50 people simultaneously. The longest spans over 50 meters. Unlike concrete bridges, they require no external materials, zero carbon emissions, and actually improve the local ecosystem. Today, a new generation of Khasi youth is learning this ancient art, even as scientists study these structures for insights into sustainable bioengineering.`,
     author: "Devi Khonglah",
     date: "2025-11-30",
-    readingTime: 5,
+    readTime: 5,
     image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
   },
 ];
@@ -660,3 +673,10 @@ export function getMonumentById(id: string): Monument | undefined {
 export function getStoryBySlug(slug: string): Story | undefined {
   return STORIES.find(s => s.slug === slug);
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ALIAS EXPORTS FOR COMPATIBILITY
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export const formatDate = formatEventDate;
+export const stories = STORIES;
