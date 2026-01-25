@@ -127,9 +127,9 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
             {/* Support Button (Desktop) */}
             <div className="header__actions">
               <Link
-                href="/support"
+                href="/donate"
                 className="header__support-btn"
-                onClick={() => handleNavClick("/support", "Support")}
+                onClick={() => handleNavClick("/donate", "Support")}
               >
                 <svg
                   className="header__support-icon"
@@ -251,9 +251,9 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
             {/* Support CTA */}
             <div className="sheet__cta">
               <Link
-                href="/support"
+                href="/donate"
                 className="sheet__support-btn"
-                onClick={() => handleNavClick("/support", "Support")}
+                onClick={() => handleNavClick("/donate", "Support")}
               >
                 <svg
                   className="sheet__support-icon"

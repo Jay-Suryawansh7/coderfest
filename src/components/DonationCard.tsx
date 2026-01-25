@@ -36,7 +36,7 @@ export default function DonationCard({ tier }: DonationCardProps) {
                 tier.highlighted ? "text-white" : "text-primary"
               }`}
             >
-              {formatPrice(tier.amount, tier.currency)}
+              {formatPrice(tier.amount)}
             </span>
             <span
               className={`text-sm ${

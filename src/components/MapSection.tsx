@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Monument } from "@/lib/mockData";
+import "leaflet/dist/leaflet.css";
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    MAP SECTION — Heritage Pulse
@@ -99,7 +100,7 @@ export default function MapSection({ markers, onMarkerClick }: MapSectionProps) 
     setIsClient(true);
     
     // Import Leaflet CSS
-    import("leaflet/dist/leaflet.css");
+    // Leaflet CSS imported at top level
     
     // Create icons for each category
     const categoryIcons: Record<string, unknown> = {};

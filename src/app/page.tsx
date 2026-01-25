@@ -3,7 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import MapSection from "@/components/MapSection";
 import EventCard from "@/components/EventCard";
 import StoryCard from "@/components/StoryCard";
-import { getFeaturedEvents, getFeaturedStories } from "@/lib/mockData";
+import { getFeaturedEvents, getFeaturedStories, monuments } from "@/lib/mockData";
 
 export default function HomePage() {
   const featuredEvents = getFeaturedEvents().slice(0, 3);
@@ -15,7 +15,7 @@ export default function HomePage() {
       <HeroSection />
 
       {/* Map Section */}
-      <MapSection />
+      <MapSection markers={monuments} />
 
       {/* Featured Events Section */}
       <section className="section-padding">
