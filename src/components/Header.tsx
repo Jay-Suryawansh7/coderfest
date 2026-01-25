@@ -380,7 +380,7 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
         .header__links {
           display: none;
           align-items: center;
-          gap: 4px;
+          gap: 40px;
           list-style: none;
           margin: 0;
           padding: 0;
@@ -395,10 +395,11 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
         .header__link {
           position: relative;
           display: block;
-          padding: 10px 18px;
+          padding: 10px 0;
           font-family: var(--font-body);
           font-weight: 500;
-          font-size: 14px;
+          font-size: 15px;
+          letter-spacing: 0.02em;
           color: #5A4D3B;
           text-decoration: none;
           transition: color 0.2s;
@@ -410,9 +411,8 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
 
         .header__link-underline {
           position: absolute;
-          bottom: 4px;
-          left: 50%;
-          transform: translateX(-50%);
+          bottom: 0;
+          left: 0;
           width: 0;
           height: 2px;
           background: #8B3A1F;
@@ -421,7 +421,7 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
         }
 
         .header__link:hover .header__link-underline {
-          width: 60%;
+          width: 100%;
         }
 
         .header__link--active {
@@ -429,7 +429,7 @@ export default function Header({ currentRoute = "/", onNavClick }: HeaderProps) 
         }
 
         .header__link--active .header__link-underline {
-          width: 60%;
+          width: 100%;
           background: #8B3A1F;
         }
 
