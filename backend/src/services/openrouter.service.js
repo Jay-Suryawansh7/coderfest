@@ -181,8 +181,8 @@ Output must be valid JSON matching this structure:
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: userMessage }
             ],
-            temperature: 0.3, // Low validation for strict adherence to data
-            response_format: { type: 'json_object' }, // Force JSON output if supported
+            temperature: 0.6,
+            // response_format: { type: 'json_object' }, // Removed for DeepSeek R1 compatibility
         });
 
         if (!response.data?.choices?.[0]?.message?.content) {
@@ -190,14 +190,29 @@ Output must be valid JSON matching this structure:
         }
 
         try {
-            return JSON.parse(response.data.choices[0].message.content);
+            let content = response.data.choices[0].message.content;
+
+            // Clean up DeepSeek reasoning traces <think>...</think>
+            content = content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+
+            // Extract JSON from code blocks if present
+            const jsonMatch = content.match(/```json([\s\S]*?)```/);
+            if (jsonMatch) {
+                content = jsonMatch[1].trim();
+            }
+
+            return JSON.parse(content);
         } catch (parseError) {
             logger.error('Error parsing itinerary JSON:', parseError);
+            logger.debug('Raw AI content:', response.data.choices[0].message.content);
             throw new Error('Failed to parse AI response into valid JSON');
         }
 
     } catch (error) {
         logger.error('Itinerary generation error:', error.message);
+        if (error.response) {
+            logger.error('OpenRouter response error:', JSON.stringify(error.response.data));
+        }
         throw ApiError.internal('Failed to generate itinerary');
     }
 };

@@ -12,6 +12,7 @@ const {
     openRouterService,
     heritageService
 } = require('../services');
+const db = require('../config/database');
 const logger = require('../utils/logger');
 const { ApiError } = require('../middleware/errorHandler');
 const { createItinerary } = require('../models/itinerary.model');
@@ -175,8 +176,31 @@ const generateItinerary = async (req, res, next) => {
         // Calculate totals
         const totalSites = processedSchedule.reduce((sum, day) => sum + day.sites.length, 0);
 
+        // Save to Database
+        let dbItineraryId = generateId('itin'); // Fallback if DB insert fails (shouldn't happen with catch)
+        try {
+            const insertQuery = `
+        INSERT INTO itineraries (location_name, days, preferences, schedule, summary)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING id
+      `;
+            const result = await db.query(insertQuery, [
+                geocoded.displayName,
+                days,
+                JSON.stringify(preferences),
+                JSON.stringify(processedSchedule), // Store clean schedule
+                aiItinerary.summary || `A ${days}-day trip to ${location}`
+            ]);
+
+            dbItineraryId = result.rows[0].id;
+            logger.info(`Itinerary saved to database with ID: ${dbItineraryId}`);
+        } catch (dbError) {
+            logger.error('Failed to save itinerary to database:', dbError);
+            // We continue to return the response even if DB save fails, just log it.
+        }
+
         const responseData = {
-            itinerary_id: generateId('itin'),
+            itinerary_id: dbItineraryId,
             location: geocoded.displayName,
             days,
             schedule: processedSchedule,
