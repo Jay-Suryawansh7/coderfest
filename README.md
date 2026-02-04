@@ -5,7 +5,7 @@
 ## ✨ Features
 
 -   **Heritage Site Exploration:** Discover heritage sites through an interactive map or detailed list view.
--   **AI Chat Assistant:** "Neo" - A context-aware, RAG-based AI assistant that answers queries about Indian heritage, utilizing a rich knowledge base.
+-   **AI Chat Assistant:** A context-aware AI assistant that answers queries about Indian heritage.
 -   **User Authentication:** Secure login and profile management via Clerk.
 -   **Rich Content:** Detailed information, images, and historical context for each site.
 -   **Responsive Design:** Optimized for both desktop and mobile devices.
