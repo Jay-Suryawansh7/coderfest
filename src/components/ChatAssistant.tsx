@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, Sparkles, Bot } from "lucide-react";
 import { clsx } from "clsx";
+import { api } from "@/lib/api";
 
 type Message = {
   id: string;
@@ -43,27 +44,35 @@ export default function ChatAssistant() {
 
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
     setIsLoading(true);
 
-    // Mock API delay
-    setTimeout(() => {
-      const responses = [
-        "That's a fascinating aspect of our history. The intricate details of this monument reflect the craftsmanship of that era.",
-        "I can tell you more about the architectural significance if you're interested!",
-        "Did you know this site is protected by UNESCO? It's a testament to our rich heritage.",
-        "Connecting with our roots allows us to understand the present better. What else would you like to explore?",
-      ];
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+    try {
+      // Create conversation context from previous messages (last 6)
+      // This is a simplified context management.
+      // Ideally backend handles history via conversationId, but we'll send just text for now as per api.ts
+
+      const response = await api.chat(encodeURIComponent(userMessage.content));
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: randomResponse,
+        content: response.data?.reply || response.reply || "I'm sorry, I couldn't process that request right now.",
       };
 
       setMessages((prev) => [...prev, aiMessage]);
+    } catch (error) {
+      console.error("Chat error:", error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "I'm having trouble connecting to my knowledge base. Please try again later.",
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -139,7 +148,7 @@ export default function ChatAssistant() {
             ))}
             {isLoading && (
               <div className="flex max-w-[85%] self-start items-start gap-1">
-                 <div className="rounded-2xl rounded-bl-none bg-stone-100 px-4 py-3 dark:bg-stone-800">
+                <div className="rounded-2xl rounded-bl-none bg-stone-100 px-4 py-3 dark:bg-stone-800">
                   <div className="flex gap-1">
                     <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-stone-400 [animation-delay:-0.3s]"></span>
                     <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-stone-400 [animation-delay:-0.15s]"></span>

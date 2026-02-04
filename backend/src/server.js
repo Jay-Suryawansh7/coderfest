@@ -5,7 +5,9 @@
  * health checks, and graceful shutdown handling.
  */
 
+console.log('DEBUG: Starting server.js');
 require('dotenv').config();
+console.log('DEBUG: Dotenv loaded');
 
 const express = require('express');
 const cors = require('cors');
@@ -24,11 +26,10 @@ const healthRoutes = require('./routes/health.routes');
 const apiRoutes = require('./routes/api.routes');
 
 // Initialize Express app
+console.log('DEBUG: Initializing app...');
 const app = express();
 
-// ===========================================
-// Security Middleware
-// ===========================================
+console.log('DEBUG: Setting up middleware...');
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
@@ -71,22 +72,33 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public'))); // Added static files middleware
+console.log('DEBUG: Middleware setup complete');
 
 // ===========================================
 // Request Logging Middleware
 // ===========================================
+console.log('DEBUG: Setting up request logger...');
 app.use(requestLogger);
 
 // ===========================================
 // Rate Limiting (applied to API routes)
 // ===========================================
+console.log('DEBUG: Setting up rate limiter...');
 app.use('/api', rateLimiter);
 
 // ===========================================
 // Routes
 // ===========================================
+console.log('DEBUG: Setting up /health routes...');
 app.use('/health', healthRoutes);
-app.use('/api', apiRoutes);
+
+console.log('DEBUG: Setting up /api routes...');
+try {
+    app.use('/api', apiRoutes);
+} catch (e) {
+    console.error('DEBUG: Crash mounting /api routes', e);
+}
+console.log('DEBUG: Routes setup complete');
 
 // Root route
 app.get('/', (req, res) => {
@@ -105,10 +117,13 @@ app.get('/', (req, res) => {
 app.use(notFoundHandler);
 app.use(errorHandler);
 
+let server; // Declare variable outside scope
+
 // ===========================================
 // Server Startup
 // ===========================================
-const server = app.listen(config.port, () => {
+console.log('DEBUG: Attempting to listen on port', config.port);
+server = app.listen(config.port, () => {
     logger.info(`
 ╔════════════════════════════════════════════════════════╗
 ║           Heritage Pulse API Server                    ║
@@ -125,6 +140,12 @@ const server = app.listen(config.port, () => {
 // ===========================================
 const gracefulShutdown = (signal) => {
     logger.info(`\n${signal} received. Starting graceful shutdown...`);
+
+    if (!server) {
+        logger.info('Server was not started yet. Exiting.');
+        process.exit(0);
+        return;
+    }
 
     server.close((err) => {
         if (err) {
@@ -150,12 +171,14 @@ process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (error) => {
+    console.error('CRITICAL: Uncaught Exception:', error); // Direct console log
     logger.error('Uncaught Exception:', error);
     gracefulShutdown('UNCAUGHT_EXCEPTION');
 });
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
+    console.error('CRITICAL: Unhandled Rejection:', reason); // Direct console log
     logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
